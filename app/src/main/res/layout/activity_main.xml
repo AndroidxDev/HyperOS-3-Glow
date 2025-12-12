@@ -132,26 +132,26 @@
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/logo_view_linear_layout_shade"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:visibility="invisible">
-
-                    <ImageView
-                        android:id="@+id/app_icon_logo_view_shade"
-                        android:layout_width="320dp"
-                        android:layout_height="45.28dp"
-                        android:background="@drawable/new_logo_image"
-                        android:backgroundTint="#50000000"
-                        android:importantForAccessibility="no"
-                        android:scaleType="fitXY" />
-
-                </LinearLayout>
             </FrameLayout>
+            <LinearLayout
+                android:id="@+id/logo_view_linear_layout_shade"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="invisible">
+
+                <ImageView
+                    android:id="@+id/app_icon_logo_view_shade"
+                    android:layout_width="320dp"
+                    android:layout_height="45.28dp"
+                    android:background="@drawable/new_logo_image"
+                    android:backgroundTint="#50000000"
+                    android:importantForAccessibility="no"
+                    android:scaleType="fitXY" />
+
+            </LinearLayout>
             <FrameLayout
                 android:id="@+id/next_layout"
                 android:layout_width="wrap_content"
