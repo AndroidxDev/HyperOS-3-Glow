@@ -64,15 +64,18 @@ class GlowPainter(context: Context) {
         this.mShader.setFloatUniform("uUseOklab", this.uUseOklab)
         this.mShader.setFloatUniform(
             "uColorBlack",
-            toFloatArray(context.getColor(android.R.color.system_accent1_700))
+            //toFloatArray(context.getColor(android.R.color.system_accent1_700))
+            floatArrayOf(0.961f, 0.157f, 0.157f)
         )
         this.mShader.setFloatUniform(
             "uColorMid",
-            toFloatArray(context.getColor(android.R.color.system_accent2_400))
+            //toFloatArray(context.getColor(android.R.color.system_accent2_400))
+            floatArrayOf(0.604f, 0.659f, 0.961f)
         )
         this.mShader.setFloatUniform(
             "uColorWhite",
-            toFloatArray(context.getColor(android.R.color.system_accent3_100))
+            //toFloatArray(context.getColor(android.R.color.system_accent3_100))
+            floatArrayOf(0.302f, 0.29f, 0.843f)
         )
         this.mShader.setFloatUniform("uScale", this.uScale)
         this.mShader.setFloatUniform("uSpeed", this.uSpeed)
@@ -134,11 +137,17 @@ class GlowPainter(context: Context) {
         return null
     }
 
-    val renderEffect: RenderEffect
-        get() = RenderEffect.createShaderEffect(this.mShader)
+    fun setCircleYOffset(f: Float) {
+        this.uCircleYOffset = f
+        this.mShader.setFloatUniform("uCircleYOffset", f)
+    }
 
-    fun needAdmission(z: Boolean) {
-        this.mShader.setFloatUniform("uShowCircle", if (z) 1.0f else 0.0f)
+    fun getRenderEffect(): RenderEffect {
+        return RenderEffect.createShaderEffect(this.mShader)
+    }
+
+    fun needAdmission(isNeed: Boolean) {
+        this.mShader.setFloatUniform("uShowCircle", if (isNeed) 1.0f else 0.0f)
     }
 
     fun setAnimTime(f: Float) {
@@ -147,13 +156,5 @@ class GlowPainter(context: Context) {
 
     fun setResolution(f: Float, f2: Float) {
         this.mShader.setFloatUniform("uResolution", f, f2)
-    }
-
-    private fun toFloatArray(color: Int): FloatArray {
-        return floatArrayOf(
-            ((color shr 16) and 0xFF) / 255f,
-            ((color shr 8) and 0xFF) / 255f,
-            (color and 0xFF) / 255f
-        )
     }
 }

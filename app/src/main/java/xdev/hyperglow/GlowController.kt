@@ -3,6 +3,7 @@ package xdev.hyperglow
 import android.view.View
 
 class GlowController(private val mTarget: View) : Runnable {
+    private var mDeltaTime = 0f
     var mGlowPainter: GlowPainter? = null
     private var mLastGlobalTime: Long = 0
     private var mTime = 0f
@@ -11,6 +12,7 @@ class GlowController(private val mTarget: View) : Runnable {
     private fun tickPingPong() {
         val nanoTime = System.nanoTime()
         val f = (((nanoTime - this.mLastGlobalTime).toDouble()) * 1.0E-9).toFloat()
+        this.mDeltaTime = f
         var f2 = this.mTime
         val f3 = this.mTimeDirection
         f2 += f * f3
@@ -33,22 +35,39 @@ class GlowController(private val mTarget: View) : Runnable {
                 this.mTarget.width.toFloat(),
                 this.mTarget.height.toFloat()
             )
-            this.mTarget.setRenderEffect(this.mGlowPainter!!.renderEffect)
+            this.mTarget.setRenderEffect(this.mGlowPainter!!.getRenderEffect())
             this.mTarget.postDelayed(this, 16)
         }
     }
 
-    fun start(z: Boolean) {
+    fun setCircleYOffsetWithView(view: View?, view2: View?) {
+        if (this.mGlowPainter != null && view != null && view2 != null) {
+            val iArr = IntArray(2)
+            view.getLocationOnScreen(iArr)
+            val height = iArr[1] + (view.height / 2)
+            val height2 = view2.height.toFloat()
+            setCircleYOffset(((height2 / 2.0f) - (height.toFloat())) / height2)
+        }
+    }
+
+    fun start(isStart: Boolean) {
         if (this.mGlowPainter == null) {
             val glowPainter = GlowPainter(this.mTarget.context)
             this.mGlowPainter = glowPainter
-            glowPainter.needAdmission(z)
+            glowPainter.needAdmission(isStart)
             this.mLastGlobalTime = System.nanoTime()
             resetTime()
             this.mTarget.post(this)
         }
     }
 
+    private fun tick() {
+        val nanoTime = System.nanoTime()
+        val f = (((nanoTime - this.mLastGlobalTime).toDouble()) * 1.0E-9).toFloat()
+        this.mDeltaTime = f
+        this.mTime += f
+        this.mLastGlobalTime = nanoTime
+    }
 
     fun stop() {
         if (this.mGlowPainter != null) {
@@ -61,5 +80,10 @@ class GlowController(private val mTarget: View) : Runnable {
     fun resetTime() {
         this.mLastGlobalTime = System.nanoTime()
         this.mTime = 0.0f
+    }
+
+    fun setCircleYOffset(f: Float) {
+        val glowPainter = this.mGlowPainter
+        glowPainter?.setCircleYOffset(f)
     }
 }
